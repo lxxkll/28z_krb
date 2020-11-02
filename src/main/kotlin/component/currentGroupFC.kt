@@ -23,7 +23,7 @@ interface GroupProps: RProps {
 }
 external fun encodeURIComponent(str: String): String
 
-fun currentGroup(header: String, index:Int) =
+fun currentGroup(header: String, index:Int, type: Int) =
 	functionalComponent<GroupProps> { props ->
 		val types = listOf("shortanswer", "numerical")
 
@@ -71,6 +71,7 @@ fun currentGroup(header: String, index:Int) =
 					}
 					tbody {
 						props.questions.questions.forEachIndexed{ questionIndex, it ->
+							if(type == 2 || it.type == types[type])
 							tr{
 								td{
 									+"${it.id}"
@@ -148,6 +149,7 @@ fun currentGroup(header: String, index:Int) =
 							}
 					}
 				}
+				if(type == 2)
 				div("export-import"){
 					div("exportBlock"){
 						button {
@@ -319,5 +321,6 @@ fun questionListToggleEdit():(Event) -> Unit{
 fun RBuilder.currentGroupFC(
 		questions: QuestionGroup,
 		header: String,
-		indexGroup:Int
-) = child(withDisplayName(header, currentGroup(header, indexGroup))){attrs.questions = questions}
+		indexGroup:Int,
+		type:Int
+) = child(withDisplayName(header, currentGroup(header, indexGroup, type))){attrs.questions = questions}

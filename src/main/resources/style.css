@@ -15,15 +15,22 @@ h2{
 }
 textarea{
     width: 50%;
-    height: 100vh;
+    height: 100px;
 }
 .inputBlock{
     display: flex;
     align-items: center;
 }
 
-.inputBlock button{
-    height: 100px;
+.export-import{
+    display: flex;
+    justify-items: center;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.export-import button{
+    height: 70px;
+
 }
 /*navbar*/
 .nav {

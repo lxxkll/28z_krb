@@ -12,8 +12,8 @@ import react.router.dom.*
 import redux.*
 import kotlin.browser.document
 
-class IndicesWithQuestion(val question:Question, val questionGroupIndex:Int, val questionIndex:Int )/* Класс для группировки индексов вопроса и самого вопроса,
-                                                                                                    нужен для того, чтобы в компонентах renderByTypesFC и Home работали ссылки */
+//class IndicesWithQuestion(val question:Question, val questionGroupIndex:Int, val questionIndex:Int )/* Класс для группировки индексов вопроса и самого вопроса,
+//                                                                                                    нужен для того, чтобы в компонентах renderByTypesFC и Home работали ссылки */
 interface RootProps : RProps {
 	var store: Store<State, RAction, WrapperAction>
 }
@@ -73,19 +73,19 @@ fun root() = functionalComponent<RootProps> { props ->
 			route("/question_groups",
 				exact = true,
 				render = {
-					currentGroupFC(props.store.getState().questionGroup[0], props.store.getState().questionGroup[0].title,0)//компонент отдельной группы вопросов
+					currentGroupFC(props.store.getState().questionGroup[0], props.store.getState().questionGroup[0].title,0, 2)//компонент отдельной группы вопросов
 				}
 			)
 			route("/${types[0]}",
 					exact = true,
 					render = {
-						renderByTypesFC(getQuestionsByType(props.store.getState().questionGroup, types[0]), "Short answer")// Компонент со всеми вопросами типа shortanswer
+						currentGroupFC(props.store.getState().questionGroup[0], props.store.getState().questionGroup[0].title,0, 0)// Компонент со всеми вопросами типа shortanswer
 					}
 			)
 			route("/${types[1]}",
 					exact = true,
 					render = {
-						renderByTypesFC(getQuestionsByType(props.store.getState().questionGroup, types[1]), "Number response")// Компонент со всеми вопросами типа numeric
+						currentGroupFC(props.store.getState().questionGroup[0], props.store.getState().questionGroup[0].title,0, 1)// Компонент со всеми вопросами типа numeric
 					}
 			)
 
@@ -93,7 +93,7 @@ fun root() = functionalComponent<RootProps> { props ->
 				route("/question_groups/group_$questionGroupIndex",
 					exact = true,
 					render = {
-						currentGroupFC(questionGroup, questionGroup.title, questionGroupIndex)//компонент отдельной группы вопросов
+						currentGroupFC(questionGroup, questionGroup.title, questionGroupIndex, 1)//компонент отдельной группы вопросов
 					}
 				)
 				questionGroup.questions.forEachIndexed { index, it ->
@@ -107,17 +107,17 @@ fun root() = functionalComponent<RootProps> { props ->
 			}
 		}
 	}
-
-fun getQuestionsByType(questionGroup:MutableList<QuestionGroup>, type:String):MutableList<IndicesWithQuestion>{// фильтрует список по вопросам и возвращает список экземпляров класса
-	val temp = mutableListOf<IndicesWithQuestion>()                                                            // IndicesWithQuestion только с вопросами указанного типа
-	questionGroup.forEachIndexed {questionGroupIndex, qg ->
-		qg.questions.forEachIndexed {questionIndex, question ->
-			if(question.type == type)
-				temp.add(IndicesWithQuestion(question, questionGroupIndex, questionIndex))
-		}
-	}
-	return temp
-}
+//
+//fun getQuestionsByType(questionGroup:MutableList<QuestionGroup>, type:String):MutableList<IndicesWithQuestion>{// фильтрует список по вопросам и возвращает список экземпляров класса
+//	val temp = mutableListOf<IndicesWithQuestion>()                                                            // IndicesWithQuestion только с вопросами указанного типа
+//	questionGroup.forEachIndexed {questionGroupIndex, qg ->
+//		qg.questions.forEachIndexed {questionIndex, question ->
+//			if(question.type == type)
+//				temp.add(IndicesWithQuestion(question, questionGroupIndex, questionIndex))
+//		}
+//	}
+//	return temp
+//}
 
 fun RBuilder.root(store: Store<State, RAction, WrapperAction>) =
 	child(withDisplayName("Root", root())) {
